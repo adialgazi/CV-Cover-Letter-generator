@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Improver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 5rem;
+            background-color: #e9ecef;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .bg-light {
+            background-color: #f0f2f5 !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,.1);
+        }
+        .btn-primary {
+            background-color: #004085;
+            border: none;
+        }
+        .footer {
+            margin-top: 2rem;
+            padding: 2rem 0;
+            background-color: #e9ecef;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        .footer .container {
+            max-width: 960px;
+            color: #6c757d;
+        }
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255,255,255,.75);
+        }
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: rgba(255,255,255,1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">CV Improver</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/signup">Signup</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="bg-light p-5 rounded">
+            <h1>Welcome to CV Improver</h1>
+            <p class="lead">Boost your professional profile with our comprehensive CV improvement tools. Create, edit, and enhance your CV to stand out in the job market.</p>
+            <a class="btn btn-lg btn-outline-primary me-2" href="/login" role="button">Login</a>
+            <a class="btn btn-lg btn-primary" href="/signup" role="button">Sign up today &raquo;</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted"></span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-qZVuP3RHjs3B8B6vXIoD0m3H17W8JOCxIYUfL1plbcbzdi12yW+PTywWJ01+l8sj" crossorigin="anonymous"></script>
+</body>
+</html>

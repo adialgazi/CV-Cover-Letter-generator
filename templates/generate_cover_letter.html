@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Cover Letter - CV Improver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 5rem;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<form action="/submit-cover-letter/{{ uuid }}" method="post" enctype="multipart/form-data">
+    <div class="container">
+        <h1>Generate Cover Letter</h1>
+        <form id="coverLetterForm">
+            <div class="mb-3">
+                <label for="coverLetterText" class="form-label">Job Description</label>
+                <textarea class="form-control" id="coverLetterText" name="coverLetterText" rows="10" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label>Select CV option:</label>
+                <div>
+                    <input type="radio" id="uploadCV" name="cvOption" value="upload" checked>
+                    <label for="uploadCV">Upload Your Own CV</label>
+                </div>
+                <div>
+                    <input type="radio" id="selectTemplate" name="cvOption" value="template">
+                    <label for="selectTemplate">Choose a Template</label>
+                </div>
+            </div>
+            <div class="mb-3" id="uploadSection">
+                <label for="cvUpload" class="form-label">Upload Your CV</label>
+                <input class="form-control" type="file" id="cvUpload" name="cvUpload">
+            </div>
+            <div class="mb-3 hidden" id="templateSection">
+                <p>Select a Template:</p>
+                <div>
+                    <img src="template1.jpg" alt="Template 1" style="width: 100px; cursor: pointer;">
+                    <img src="template2.jpg" alt="Template 2" style="width: 100px; cursor: pointer;">
+                    <img src="template3.jpg" alt="Template 3" style="width: 100px; cursor: pointer;">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('coverLetterForm').cvOption.forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('uploadSection').classList.toggle('hidden', this.value !== 'upload');
+                document.getElementById('templateSection').classList.toggle('hidden', this.value !== 'template');
+            });
+        });
+    </script>
+</body>
+</html>

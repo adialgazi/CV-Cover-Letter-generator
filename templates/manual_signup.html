@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Sign Up - CV Improver</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="/static/images/favicon.ico">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 5rem;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 960px;
+        }
+        .section {
+            display: none;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section.active {
+            display: block;
+        }
+        .navigation, .action-buttons {
+            margin-top: 20px;
+            text-align: right;
+        }
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .group {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="signupForm">
+            <div class="section active" id="basicInformation">
+                <h2>Basic Information</h2>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="phone" placeholder="Phone Number">
+                <textarea name="professional_summary" placeholder="Professional Summary"></textarea>
+                <input type="text" name="title" placeholder="Title">
+                <input type="file" name="photo" accept="image/*">
+            </div>
+
+            <div class="section" id="projects">
+                <h2>Projects</h2>
+                <div id="projectsContainer">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addProjectField()">Add Project</button>
+            </div>
+
+            <div class="section" id="education">
+                <h2>Education</h2>
+                <div id="educationContainer">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addEducationField()">Add Education</button>
+            </div>
+
+            <div class="section" id="languages">
+                <h2>Languages</h2>
+                <div id="languagesContainer"></div>
+                <button type="button" class="btn btn-primary" onclick="addLanguageField()">Add Language</button>
+            </div>
+
+            <div class="section" id="skills">
+                <h2>Skills</h2>
+                <div id="skillsContainer"></div>
+                <button type="button" class="btn btn-primary" onclick="addSkillField()">Add Skill</button>
+            </div>
+
+            <div class="section" id="workExperience">
+                <h2>Work Experience</h2>
+                <div id="workExperienceContainer">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addWorkExperienceField()">Add Work Experience</button>
+            </div>
+
+            <div class="section" id="volunteering">
+                <h2>Volunteering</h2>
+                <div id="volunteeringContainer">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addVolunteeringField()">Add Volunteering</button>
+            </div>
+
+
+            <div class="navigation">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="navigate(-1)">Previous</button>
+                <button type="button" class="btn btn-secondary" id="nextBtn" onclick="navigate(1)">Next</button>
+                <button type="button" class="btn btn-success" id="submitBtn" onclick="confirmSubmission()" style="display: none;">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let currentSectionIndex = 0;
+        const sections = document.querySelectorAll('.section');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        async function confirmSubmission() {
+            const isConfirmed = confirm("Are you sure you want to submit?");
+            if (isConfirmed) {
+                const formData = new FormData(document.getElementById('signupForm'));
+                const projects = [];
+                const projectGroups = document.querySelectorAll('.project-group');
+                projectGroups.forEach((group) => {
+                    const projectName = group.querySelector('input[name="projects[project_name][]"]').value;
+                    const projectDescription = group.querySelector('textarea[name="projects[project_description][]"]').value;
+                    const projectExtraNotes = group.querySelector('textarea[name="projects[project_extra_notes][]"]').value;
+                    projects.push({
+                        project_name: projectName,
+                        project_description: projectDescription,
+                        extra_notes: projectExtraNotes
+                    });
+                });
+                const educationList = [];
+                const educationGroups = document.querySelectorAll('.education-group');
+                educationGroups.forEach((group) => {
+                const schoolName = group.querySelector('input[name="education[school_name][]"]').value;
+                const schoolLevel = group.querySelector('input[name="education[level][]"]').value;
+                const schoolStartDate = group.querySelector('input[name="education[start_date][]"]').value;
+                const schoolEndDate = group.querySelector('input[name="education[end_date][]"]').value;
+                const schoolAchievements = group.querySelector('textarea[name="education[achievements][]"]').value;
+                educationList.push({
+                    school_name: schoolName,
+                    level: schoolLevel,
+                    start_date: schoolStartDate,
+                    end_date: schoolEndDate,
+                    gpa: 15,
+                    field_of_study: "Computer Science",
+                    achievements: schoolAchievements,
+                    extra_notes: "None"
+                    });
+                });
+                const applicant_info = JSON.stringify({
+                    "full_name": formData.get("first_name") + " " + formData.get("last_name"),
+                    "email": formData.get("email"),
+                    "phone": formData.get("phone"),
+                    "proffesional_summary": formData.get("professional_summary"),
+                    "title": formData.get("title")
+                });
+                // alert(applicant_info)
+                const languages = [];
+                document.querySelectorAll('.language-group').forEach((group) => {
+                    const languageName = group.querySelector('input[name="languages[name][]"]').value;
+                    const languageLevel = group.querySelector('select[name="languages[level][]"]').value;
+                    languages.push({
+                        name: languageName,
+                        level: languageLevel
+                    });
+                });
+                const skills = [];
+                document.querySelectorAll('.skill-group').forEach((group) => {
+                    const skillName = group.querySelector('input[name="skills[name][]"]').value;
+                    const skillLevel = group.querySelector('select[name="skills[level][]"]').value;
+                    skills.push({
+                        name: skillName,
+                        level: skillLevel
+                    });
+                });
+                const workExperiences = [];
+                document.querySelectorAll('#workExperienceContainer div').forEach((group) => {
+                    const title = group.querySelector('input[name="work_experience[title][]"]').value;
+                    const companyName = group.querySelector('input[name="work_experience[company_name][]"]').value;
+                    const achievements = group.querySelector('textarea[name="work_experience[achievements][]"]').value;
+                    const extraNotes = group.querySelector('textarea[name="work_experience[extra_notes][]"]').value;
+                    workExperiences.push({
+                        title: title,
+                        company_name: companyName,
+                        achievements: achievements,
+                        extra_notes: extraNotes
+                    });
+                });
+                const volunteeringActivities = [];
+                document.querySelectorAll('#volunteeringContainer div').forEach((group) => {
+                    const organization = group.querySelector('input[name="volunteering[organization][]"]').value;
+                    const role = group.querySelector('input[name="volunteering[role][]"]').value;
+                    const details = group.querySelector('textarea[name="volunteering[details][]"]').value;
+                    volunteeringActivities.push({
+                        organization: organization,
+                        role: role,
+                        details: details
+                    });
+                });
+                const body = {
+                applicant_data: applicant_info,
+                education: JSON.stringify(educationList),
+                projects: JSON.stringify(projects),
+                work_experience: JSON.stringify(workExperiences),
+                skills: JSON.stringify(skills),
+                languages: JSON.stringify(languages),
+                volunteering: JSON.stringify(volunteeringActivities)
+                };
+                try {
+                    const response = await fetch('/submit_form', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(body)
+                    });
+                    if (response.ok) {
+                        const jsonResponse = await response.json();
+                        if (jsonResponse.success && jsonResponse.applicant_uuid) {
+                            alert(`This is your UUID, don't forget it: ${jsonResponse.applicant_uuid}`);
+                            window.location.href = `/dashboard/${jsonResponse.applicant_uuid}`;
+                        } else {
+                            alert('Submission failed: ' + jsonResponse.message);
+                        }
+                    } else {
+                        alert('Submission failed. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error during submission:', error);
+                    alert('Submission error. Please check the console for more details.');
+                }
+            } else {
+                console.log('Submission cancelled.');
+            }
+        }
+
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentSectionIndex === 0;
+            nextBtn.style.display = currentSectionIndex === sections.length - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentSectionIndex === sections.length - 1 ? 'inline-block' : 'none';
+        }
+
+        function navigate(direction) {
+            if (direction === -1 && currentSectionIndex === 0 ||
+                direction === 1 && currentSectionIndex === sections.length - 1) {
+                return;
+            }
+
+            sections[currentSectionIndex].classList.remove('active');
+            currentSectionIndex += direction;
+            sections[currentSectionIndex].classList.add('active');
+            updateNavigationButtons();
+        }
+
+        function addEducationField() {
+            const container = document.getElementById('educationContainer'); // Ensure this matches your HTML
+            const html = `
+                <div class="education-group">
+                    <input type="text" name="education[school_name][]" placeholder="School Name" >
+                    <input type="text" name="education[level][]" placeholder="Level" >
+                    <input type="date" name="education[start_date][]" placeholder="Start Date" >
+                    <input type="date" name="education[end_date][]" placeholder="End Date" >
+                    <input type="number" name="education[gpa][]" placeholder="GPA" >
+                    <input type="text" name="education[field_of_study][]" placeholder="Field of Study" >
+                    <textarea name="education[achievements][]" placeholder="Achievements"></textarea>
+                    <button type="button" onclick="removeThisField(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addProjectField() {
+            const container = document.getElementById('projectsContainer');
+            const html = `
+                <div class="project-group">
+                    <input type="text" name="projects[project_name][]" placeholder="Project Name" >
+                    <textarea name="projects[project_description][]" placeholder="Project Description"></textarea>
+                    <textarea name="projects[project_extra_notes][]" placeholder="Extra Notes"></textarea>
+                    <button type="button" onclick="removeThisField(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeThisField(button) {
+            button.parentElement.remove();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            addEducationField();
+            addProjectField();
+            addWorkExperienceField();
+            addLanguageField();
+            addVolunteeringField();
+            addSkillField();
+        });
+
+        function addLanguageField() {
+            const container = document.getElementById('languagesContainer');
+            const html = `
+                <div class="language-group">
+                    <input type="text" name="languages[name][]" placeholder="Language Name" required>
+                    <select name="languages[level][]">
+                        <option value="Basic">Basic</option>
+                        <option value="Conversational">Conversational</option>
+                        <option value="Professional">Professional</option>
+                        <option value="Native">Native</option>
+                    </select>
+                    <button type="button" onclick="removeThisField(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addSkillField() {
+            const container = document.getElementById('skillsContainer');
+            const html = `
+                <div class="skill-group">
+                    <input type="text" name="skills[name][]" placeholder="Skill Name" required>
+                    <select name="skills[level][]">
+                        <option value="Basic">Basic</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                    <button type="button" onclick="removeThisField(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addWorkExperienceField() {
+            const container = document.getElementById('workExperienceContainer');
+            const html = `
+                <div>
+                    <input type="text" name="work_experience[title][]" placeholder="Title" required>
+                    <input type="text" name="work_experience[company_name][]" placeholder="Company Name" required>
+                    <textarea name="work_experience[achievements][]" placeholder="Achievements"></textarea>
+                    <textarea name="work_experience[extra_notes][]" placeholder="Extra Notes"></textarea>
+                    <button type="button" onclick="removeThisField(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function addVolunteeringField() {
+            const container = document.getElementById('volunteeringContainer');
+            const html = `
+                <div>
+                    <input type="text" name="volunteering[organization][]" placeholder="Organization" required>
+                    <input type="text" name="volunteering[role][]" placeholder="Role" required>
+                    <textarea name="volunteering[details][]" placeholder="Details"></textarea>
+                    <button type="button" onclick="removeThisField(this)">Remove</button>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+    </script>
+</body>
+</html>

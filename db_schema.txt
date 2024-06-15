@@ -1,0 +1,34 @@
+Applicants Table:
+- UUID (TEXT PRIMARY KEY UNIQUE): A unique identifier for each applicant.
+- Contact_Info (JSON): A JSON object containing the applicant's contact information.
+- Professional_Summary (TEXT): A textual summary of the applicant's professional background.
+- Photo_Base64 (TEXT): A string containing the base64-encoded photo of the applicant.
+
+Education Table:
+- ID (INTEGER PRIMARY KEY AUTOINCREMENT): A unique identifier for each education record.
+- Applicant_UUID (TEXT): The UUID of the applicant to whom the education record belongs.
+- School_Name, Level, Start_Date, End_Date, GPA, Field_Of_Study, Achievements, Extra_Notes (TEXT): Details about the applicant's education.
+
+Projects Table:
+- Details about projects the applicant has worked on, including Project_Name, Project_Description, Links, Extra_Notes.
+
+Work Experience Table:
+- Details about the applicant's work experience, including Title, Company_Name, Achievements (LIST), Extra_Notes.
+
+Volunteer Work Table:
+- Details about the applicant's volunteer work, including Organization, Role, Details.
+
+Languages Table:
+- Details about the languages the applicant speaks, including Language, Proficiency_Level, Extra_Notes.
+
+Certifications Table:
+- Details about certifications the applicant holds, including Certification_Name, Issuing_Organization, Issue_Date, Expiry_Date, Credential_ID, Credential_URL.
+
+Awards Table:
+- Details about awards the applicant has received, including Award_Name, Awarding_Organization, Date_Received, Description.
+
+Skills Table:
+- Details about the skills the applicant possesses, including Skill_Name, Proficiency_Level, Category.
+
+Personal Projects Table:
+- Details about personal projects the applicant has worked on, similar to the projects table but focused on personal initiatives.
